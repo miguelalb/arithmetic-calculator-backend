@@ -1,0 +1,5 @@
+-c requirements.txt
+pytest
+pytest-cov
+mock
+tox

@@ -1,0 +1,77 @@
+service: arithmetic-calculator-api
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.9
+  stage: ${opt:stage, 'dev'}
+
+plugins:
+  - serverless-python-requirements
+  - serverless-stack-output
+
+custom:
+  defaultCallBackURL:
+    dev: "http://localhost:8080/callback"
+    prod: "http://example.com/callback" # TODO CHANGE ME BEFORE DEPLOY TO PRODUCTION
+  defaultSignOutURL:
+    dev: "http://localhost:8080/logout"
+    prod: "http://example.com/logout" # TODO CHANGE ME BEFORE DEPLOY TO PRODUCTION
+  callBackUrls:
+    dev:
+      - ${self:custom.defaultCallBackURL.dev}
+    prod:
+      - ${self:custom.defaultCallBackURL.prod}
+  signOutURLs:
+    dev:
+      - ${self:custom.defaultSignOutURL.dev}
+    prod:
+      - ${self:custom.defaultSignOutURL.prod}
+  tableName: ${self:service}-${sls:stage}-ArithmeticCalculatorTable
+  output:
+    handler: scripts/output.handler
+    file: env.json
+
+package:
+  individually: true  # Package each function individually
+  patterns:  # Excluding some folders during function packaging
+    - "!node_modules/**"
+    - "!scripts/**"
+    - "!.tox/**"
+    - "!tox.ini"
+    - "!**/.coverage"
+    - "!**/__pycache__/**"
+    - "!**/env/**"
+    - "!**/.env/**"
+    - "!**/tests/**"
+    - "!regression/**"
+    - "!schema_validators/**"
+    - "!.serverless/**"
+    - "!.github/**"
+    - "!.env/**"
+    - "!env.json"
+
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          path: /hello
+          method: get
+
+  helloAuthRequired:
+    handler: hello_auth_required.hello
+    events:
+      - http:
+          path: /hello-auth
+          method: get
+          cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
+
+resources:
+  ${file(./resources.yml)}

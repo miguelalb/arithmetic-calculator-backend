@@ -1,0 +1,138 @@
+Resources:
+  ArithmeticCalculatorCognitoUserPool:
+    # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpool.html
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: ArithmeticCalculator
+      AliasAttributes:
+        - email
+      AutoVerifiedAttributes:
+        - email
+      # Users managed by admin only
+      AccountRecoverySetting:
+        RecoveryMechanisms:
+          - Name: "admin_only"
+            Priority: 2
+      AdminCreateUserConfig:
+        # Remove self-service sign up
+        AllowAdminCreateUserOnly: true
+      Policies:
+        PasswordPolicy:
+          MinimumLength: 6
+          RequireLowercase: true
+          RequireNumbers: true
+          RequireSymbols: true
+          RequireUppercase: true
+          TemporaryPasswordValidityDays: 14
+
+  ArithmeticCalculatorCognitoUserPoolClient:
+    # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpoolclient.html
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: ArithmeticCalculatorWebApp
+      GenerateSecret: false
+      AllowedOAuthFlows:
+        - code
+        - implicit
+      AllowedOAuthFlowsUserPoolClient: true
+      SupportedIdentityProviders:
+        - COGNITO
+      AllowedOAuthScopes:
+        - openid
+      UserPoolId:
+        Ref: "ArithmeticCalculatorCognitoUserPool"
+      CallbackURLs: ${self:custom.callBackUrls.${opt:stage, 'dev'}}
+      LogoutURLs: ${self:custom.signOutURLs.${opt:stage, 'dev'}}
+
+  ArithmeticCalculatorCognitoUserPoolDomain:
+    # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpooldomain.html
+    Type: AWS::Cognito::UserPoolDomain
+    Properties:
+      Domain: ${sls:stage, "dev"}-${self:service}
+      UserPoolId:
+        Ref: "ArithmeticCalculatorCognitoUserPool"
+
+  ArithmeticCalculatorAuthorizer:
+    # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-apigateway-authorizer.html
+    Type: AWS::ApiGateway::Authorizer
+    Properties:
+      Name: ArithmeticCalculator
+      RestApiId:
+        Ref: ApiGatewayRestApi
+      Type: COGNITO_USER_POOLS
+      ProviderARNs:
+        - Fn::GetAtt: [ ArithmeticCalculatorCognitoUserPool, Arn ]
+      IdentitySource: method.request.header.Authorization
+
+  ArithmeticCalculatorTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: PK
+          AttributeType: S
+        - AttributeName: SK
+          AttributeType: S
+        - AttributeName: GSI1PK
+          AttributeType: S
+        - AttributeName: GSI1SK
+          AttributeType: S
+        - AttributeName: GSI2PK
+          AttributeType: S
+        - AttributeName: GSI2SK
+          AttributeType: S
+      KeySchema:
+        - AttributeName: PK
+          KeyType: HASH
+        - AttributeName: SK
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 2
+      TableName: ${self:custom.tableName}
+      GlobalSecondaryIndexes:
+        - IndexName: GSI1
+          KeySchema:
+            - AttributeName: GSI1PK
+              KeyType: HASH
+            - AttributeName: GSI1SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 2
+        - IndexName: GSI2
+          KeySchema:
+            - AttributeName: GSI2PK
+              KeyType: HASH
+            - AttributeName: GSI2SK
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 2
+
+Outputs:
+  CognitoUserPoolId:
+    Description: "Arithmetic Calculator Cognito User Pool ID"
+    Value:
+      Ref: "ArithmeticCalculatorCognitoUserPool"
+
+  CognitoUserPoolClientId:
+    Description: "Arithmetic Calculator Cognito User Pool Client ID"
+    Value:
+      Ref: "ArithmeticCalculatorCognitoUserPoolClient"
+
+  CognitoUserPoolDomain:
+    Description: "Arithmetic Calculator Cognito User Pool Default Domain"
+    Value:
+      Ref: "ArithmeticCalculatorCognitoUserPoolDomain"
+
+  CallbackURL:
+    Description: "A callback URL is where the user is redirected to after a successful sign-in."
+    Value: ${self:custom.defaultCallBackURL.${opt:stage, 'dev'}}
+
+  SignOutURL:
+    Description: "A sign-out URL is where your user is redirected to after signing out."
+    Value: ${self:custom.defaultSignOutURL.${opt:stage, 'dev'}}
