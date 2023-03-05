@@ -1,6 +1,6 @@
 import functools
-from typing import Any, Callable, Union
 from http import HTTPStatus
+from typing import Any, Callable, Union
 
 from shared.api_utils import HTTPResponse
 
@@ -13,6 +13,7 @@ class HTTPException(Exception):
     """
     Base exception to raise HTTP 4xx, 5xx errors
     """
+
     def __init__(self,
                  status_code: Union[HTTPStatus, int],
                  msg: Any) -> None:

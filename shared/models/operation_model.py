@@ -22,6 +22,13 @@ class OperationBase(BaseModel):
     cost: int = 1
 
 
+class Operation(OperationBase):
+    """
+    Represents an Operation model
+    """
+    operation_id: str
+
+
 class OperationIN(OperationBase):
     """
     Represents an Operation create model object.
@@ -38,7 +45,7 @@ class OperationIN(OperationBase):
 
 class OperationOUT(OperationBase):
     """
-    Represents an Operation view object.
+    Represents an Operation view object coming from DynamoDB.
     """
     operation_id: str
 

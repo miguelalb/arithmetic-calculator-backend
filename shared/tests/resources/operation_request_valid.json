@@ -1,0 +1,12 @@
+{
+  "user_id": "bb18fa47-8fb6-4e3b-b6a6-d188f60e2413",
+  "request_type": "ARITHMETIC_OPERATION",
+  "num1": 50,
+  "num2": 20,
+  "operation": {
+    "entity": "OPERATION",
+    "operation_id": "095d1d3e-b42d-4734-a17b-325dc5c8700c",
+    "type": "ADDITION",
+    "cost": 1
+  }
+}

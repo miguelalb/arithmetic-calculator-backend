@@ -1,5 +1,3 @@
-from uuid import uuid4
-
 from pydantic import BaseModel
 
 from shared.date_utils import get_js_utc_now
@@ -16,6 +14,7 @@ class RecordBase(BaseModel):
     - date: Date when the operation was performed (in epoch format)
     """
     entity: str = "RECORD"
+    record_id: str  # Comes from the OperationRequest model
     operation_id: str
     user_id: str
     amount: int
@@ -23,6 +22,13 @@ class RecordBase(BaseModel):
     operation_response: str
     date: int  # epoch
     deleted: bool = False
+
+
+class Record(RecordBase):
+    """
+    Represents a Record model
+    """
+    pass
 
 
 class RecordIN(RecordBase):
@@ -43,9 +49,8 @@ class RecordIN(RecordBase):
 
 class RecordOUT(RecordBase):
     """
-    Represents a Record view object.
+    Represents a Record view object coming from DynamoDB.
     """
-    record_id: str
 
     def __init__(self, **data):
         mapped_fields = map_from_dynamodb_format(data)
@@ -58,7 +63,7 @@ def map_to_dynamodb_format(data: dict) -> dict:
     :param data:
     :return: mapped fields
     """
-    record_uuid = str(uuid4())
+    record_uuid = data.get('record_id', '')
     user_uuid = data.get('user_id', '')
     date = get_js_utc_now()
     user_balance = data.get('user_balance', '')

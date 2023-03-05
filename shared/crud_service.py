@@ -1,6 +1,6 @@
 from enum import Enum
-from logging import Logger
 from http import HTTPStatus
+from logging import Logger
 from typing import Optional, Any
 
 from boto3.dynamodb.conditions import Key, Attr
@@ -24,6 +24,7 @@ class CrudService:
     Encapsulates DynamoDB crud operations including error handling.
     Reference/examples: https://github.com/awsdocs/aws-doc-sdk-examples/tree/main/python/example_code/dynamodb
     """
+
     def __init__(self,
                  logger: Logger,
                  table

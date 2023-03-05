@@ -12,6 +12,10 @@ plugins:
   - serverless-stack-output
 
 custom:
+  pythonRequirements:
+    layer: true
+    useDownloadCache: false
+    useStaticCache: false
   defaultCallBackURL:
     dev: "http://localhost:8080/callback"
     prod: "http://example.com/callback" # TODO CHANGE ME BEFORE DEPLOY TO PRODUCTION
@@ -51,11 +55,18 @@ package:
     - "!.github/**"
     - "!.env/**"
     - "!env.json"
+    - "!README.md"
+    - "!ArithmeticCalculatorArchitectureDiagram.png"
+    - "!package.json"
+    - "!package-lock.json"
+    - "!resources.yml"
 
 
 functions:
   hello:
     handler: handler.hello
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
           path: /hello
@@ -63,6 +74,8 @@ functions:
 
   helloAuthRequired:
     handler: hello_auth_required.hello
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
           path: /hello-auth

@@ -1,8 +1,6 @@
-from datetime import datetime
 from uuid import UUID
 
 import simplejson as json
-
 
 """
 Helper functions/classes for JSON serialization and deserialization
@@ -31,6 +29,7 @@ class CustomSerializer(json.JSONEncoder):
     """
     Custom logic to serialize complex objects.
     """
+
     def default(self, obj):
         if isinstance(obj, UUID):
             # if the obj is uuid, return the str value of uuid

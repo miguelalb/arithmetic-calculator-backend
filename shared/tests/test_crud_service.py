@@ -1,7 +1,7 @@
 import pytest
+from boto3.dynamodb.conditions import Key, Attr
 from mock import MagicMock
 
-from boto3.dynamodb.conditions import Key, Attr
 from shared.crud_service import ConditionType, CrudService
 from shared.fixture_utils import json_fixture
 from shared.models.operation_model import OperationIN

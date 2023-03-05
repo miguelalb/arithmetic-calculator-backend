@@ -1,8 +1,7 @@
-from typing import Union
 from http import HTTPStatus
+from typing import Union
 
 from shared.json_utils import dict_to_json_str
-
 
 """
 Helper functions/classes for the API response handling
@@ -13,6 +12,7 @@ class HTTPResponse:
     """
     Serialize to a valid AWS API Gateway REST API response object
     """
+
     def __init__(self,
                  status_code: HTTPStatus,
                  body: Union[dict, list, str]
