@@ -4,7 +4,7 @@ from uuid import uuid4
 
 from pydantic import BaseModel
 
-from models.operation_model import Operation
+from shared.models.operation_model import Operation
 
 
 class RequestType(str, Enum):

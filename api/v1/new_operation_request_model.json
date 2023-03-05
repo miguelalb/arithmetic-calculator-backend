@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "NewOperationRequest",
+  "required": [
+    "operation_type"
+  ],
+  "properties": {
+    "operation_type": {
+      "type": "string",
+      "enum": ["ADDITION", "SUBTRACTION", "MULTIPLICATION", "DIVISION", "SQUARE_ROOT", "RANDOM_STRING"],
+      "title": "The type of operation to perform"
+    },
+    "num1": {
+      "type": "number",
+      "title": "First number to do an operation for"
+    },
+    "num2": {
+      "type": "number",
+      "title": "Second number to do an operation with"
+    }
+  }
+}

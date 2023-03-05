@@ -1,0 +1,3 @@
+new-operation-request:
+  name: CreateOperationRequest
+  schema: ${file(./api/v1/new_operation_request_model.json)}

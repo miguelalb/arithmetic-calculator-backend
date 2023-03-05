@@ -6,6 +6,10 @@ provider:
   name: aws
   runtime: python3.9
   stage: ${opt:stage, 'dev'}
+  apiGateway:
+    request:
+      schemas:
+        ${file(./api/schema-definitions.yml)}
 
 plugins:
   - serverless-python-requirements
@@ -60,9 +64,22 @@ package:
     - "!package.json"
     - "!package-lock.json"
     - "!resources.yml"
+    - "!api/**"
 
 
 functions:
+  NewOperationRequest:
+    handler: lambdas.new_operation_request.main.handler
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    events:
+      - http:
+          path: /new-operation-request
+          method: post
+          request:
+            schemas:
+              application/json: new-operation-request
+
   hello:
     handler: handler.hello
     layers:
