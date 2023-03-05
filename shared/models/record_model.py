@@ -22,6 +22,7 @@ class RecordBase(BaseModel):
     user_balance: int
     operation_response: str
     date: int  # epoch
+    deleted: bool = False
 
 
 class RecordIN(RecordBase):

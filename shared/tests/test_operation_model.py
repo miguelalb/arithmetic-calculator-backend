@@ -5,7 +5,7 @@ from shared.fixture_utils import json_fixture
 from shared.models.operation_model import OperationIN, OperationOUT
 
 OPERATION_CREATE_DATA_VALID = json_fixture('operation_create_data_valid.json')
-OPERATION_CREATE_DATA_INVALID = json_fixture('operation_create_date_invalid.json')
+OPERATION_CREATE_DATA_INVALID = json_fixture('operation_create_data_invalid.json')
 
 
 def test_operation_create_success():
