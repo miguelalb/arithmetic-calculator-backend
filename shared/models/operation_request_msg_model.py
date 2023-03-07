@@ -24,7 +24,7 @@ class OperationEventMessage(Base):
 
 
 def map_to_sns_topic_format(data) -> dict:
-    data['record_id'] = str(uuid4())
+    data['record_id'] = data.get('record_id', str(uuid4()))
     validate_data(data)
     return data
 

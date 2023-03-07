@@ -1,6 +1,6 @@
 {
-      "resource":"/new-operation-request",
-      "path":"/new-operation-request",
+      "resource":"/new-operation",
+      "path":"/new-operation",
       "httpMethod":"POST",
       "headers":{
          "Accept":"*/*",
@@ -96,18 +96,18 @@
                "event_id":"a6f09b3c-6a64-4321-8391-06fd59074db5",
                "token_use":"id",
                "auth_time":"123456789",
-               "iss":"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_uvloX4IJa",
+               "iss":"https://cognito-idp.us-east-1.amazonaws.com/us-east-1_akldf",
                "cognito:username":"miguel",
                "exp":"Mon Mar 06 05:52:29 UTC 2023",
                "iat":"Mon Mar 06 04:52:29 UTC 2023",
                "jti":"80b09333-fed9-4d95-9f5c-97d59a8fa9c4"
             }
          },
-         "resourcePath":"/new-operation-request",
+         "resourcePath":"/new-operation",
          "httpMethod":"POST",
          "extendedRequestId":"jqmlqBOEJWNElaw=",
          "requestTime":"06/Mar/2023:05:06:31 +0000",
-         "path":"/dev/new-operation-request",
+         "path":"/dev/new-operation",
          "accountId":"123456789",
          "protocol":"HTTP/1.1",
          "stage":"dev",

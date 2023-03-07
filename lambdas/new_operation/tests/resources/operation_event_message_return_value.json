@@ -1,0 +1,12 @@
+{
+  "user_id": "77d46173-1d59-48d0-8b75-eaa76eb857b2",
+  "record_id": "1db72b27-7de6-4bc0-9c7c-44540e6311a5",
+  "num1": 5,
+  "num2": 3,
+  "operation": {
+    "operation_id": "08a76cbd-7fa0-42e6-89c5-4c3e71c45101",
+    "entity": "OPERATION",
+    "type": "ADDITION",
+    "cost": 1
+  }
+}
