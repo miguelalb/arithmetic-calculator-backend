@@ -32,7 +32,7 @@ class SnsService:
             raise HTTPException(status_code=HTTPStatus.INTERNAL_SERVER_ERROR,
                                 msg="Oops something went wrong.")
 
-    def publish_message(self, topic_name: str, message: str, attributes: dict = None) -> str:
+    def publish_message(self, topic_name: str, message: str, attributes: dict = None) -> dict:
         """
         Publishes a message, with attributes, to a topic. Subscriptions can be filtered
         based on message attributes so that a subscription receives messages only
@@ -41,7 +41,8 @@ class SnsService:
         :param message: The message to publish.
         :param attributes: The key-value attributes to attach to the message. Values
                            must be either `str` or `bytes`.
-        :return str: The ID of the message.
+        :return dict: Response for publish action `{'MessageId': 'string', 'SequenceNumber': 'string'}`
+        Reference: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/sns/client/publish.html
         """
         try:
             payload = {}

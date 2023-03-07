@@ -1,0 +1,11 @@
+[
+  {
+    "PK": "Operation",
+    "SK": "Operation#36d7f5da-d185-4585-8d0b-1dc62f5b0f85",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#RANDOM_STRING",
+    "entity": "OPERATION",
+    "type": "RANDOM_STRING",
+    "cost": 6
+  }
+]

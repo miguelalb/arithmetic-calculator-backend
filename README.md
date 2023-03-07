@@ -89,7 +89,7 @@ $ serverless deploy
 ```
 This defaults to a dev version of the lambdas.
 
-#### Outputs:
+### Outputs:
 After running deploy, an `env.json` file will be created in the root of the project.   
 
 This file contains the outputs of the CloudFormation stack, including the **service endpoint** and the **AWS Cognito Hosted UI login URL** that's used by the users to login.  
@@ -124,37 +124,36 @@ If you'd like to deploy to prod or upgrade to a different version of the API you
 $ serverless deploy --stage prod-v1
 ```
 
-### Invocation
-
-After successful deployment, you can invoke the deployed function by using the following command:
-
-```bash
-serverless invoke --function hello
-```
-
-Which should result in response similar to the following:
-
-```json
-{
-    "statusCode": 200,
-    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully!\", \"input\": {}}"
-}
-```
-
 ### Local development
 
+1. Set up a virtual environment:   
+  ```bash
+     python3 -m venv .env
+  ```
+2. Activate virtual environment: 
+  ```bash
+     source .env/bin/activate
+  ```
+3. Install requirements: 
+  ```bash
+     pip install -r requirements.txt
+  ```
+4. Install development requirements:  
+  ```bash
+     pip install -r dev-requirements.txt
+  ```
+
 ### Testing
-To run tests, you can use the `tox` command. 
-Ensure that you have tox installed, then simply run tox from the root directory of the project.   
-This will run all the tests defined in the tests directory on each package, including coverage reports.   
-Any configuration or dependencies needed to run the tests are defined in the tox.ini file.
+To run tests, you can use the `tox` command.   
+Make sure that you activated the virtual environment and installed the requirements, then simply run `tox` from the project's root directory.   
+This will run all the tests defined in the `tox.ini` file including coverage reports.
 
 ### Local Invocation
 
 You can invoke your function locally by using the following command:
 
 ```bash
-serverless invoke local --function hello
+serverless invoke local --function HealthCheck
 ```
 
 Which should result in response similar to the following:
@@ -165,13 +164,3 @@ Which should result in response similar to the following:
     "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully!\", \"input\": {}}"
 }
 ```
-
-### Bundling dependencies
-
-In case you would like to include third-party dependencies, you will need to use a plugin called `serverless-python-requirements`. You can set it up by running the following command:
-
-```bash
-serverless plugin install -n serverless-python-requirements
-```
-
-Running the above will automatically add `serverless-python-requirements` to `plugins` section in your `serverless.yml` file and add it as a `devDependency` to `package.json` file. The `package.json` file will be automatically created if it doesn't exist beforehand. Now you will be able to add your dependencies to `requirements.txt` file (`Pipfile` and `pyproject.toml` is also supported but requires additional configuration) and they will be automatically injected to Lambda package during build process. For more details about the plugin's configuration, please refer to [official documentation](https://github.com/UnitedIncome/serverless-python-requirements).

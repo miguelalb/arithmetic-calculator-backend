@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from typing import Union
 
-from shared.json_utils import dict_to_json_str
+from shared.json_utils import dict_to_json_string
 
 """
 Helper functions/classes for the API response handling
@@ -18,7 +18,7 @@ class HTTPResponse:
                  body: Union[dict, list, str]
                  ) -> None:
         self.status_code = int(status_code)
-        self.body = dict_to_json_str(body)
+        self.body = dict_to_json_string(body)
 
     def to_dict(self) -> dict:
         return {

@@ -1,6 +1,9 @@
+import os
 from shared.models.base import Base
 
 from shared.date_utils import get_js_utc_now
+
+DEFAULT_INITIAL_USER_BALANCE = int(os.environ.get('DEFAULT_INITIAL_USER_BALANCE', 20))
 
 
 class RecordBase(Base):
@@ -68,7 +71,9 @@ def map_to_dynamodb_format(data: dict) -> dict:
     record_uuid = data.get('record_id', '')
     user_uuid = data.get('user_id', '')
     date = get_js_utc_now()
-    user_balance = data.get('user_balance', '')
+    user_balance = data.get('user_balance', DEFAULT_INITIAL_USER_BALANCE)
+
+    user_balance = zero_negative_balance(user_balance)
 
     data['PK'] = f'User#{user_uuid}'
     data['SK'] = f'Record#{record_uuid}'
@@ -78,6 +83,23 @@ def map_to_dynamodb_format(data: dict) -> dict:
     data['GSI2SK'] = f'Record#{user_balance}'
 
     return data
+
+
+def zero_negative_balance(user_balance):
+    """
+    Check if user balance is negative and set it to zero if it is.
+    Negative balance is not allowed.
+
+    *Note: This function may never be called because the workers check
+    for sufficient balance before performing an operation, but
+    is nice to have to avoid weird bugs.*
+
+    :param user_balance: the user balance
+    :return: zero
+    """
+    if user_balance < 0:
+        user_balance = 0
+    return user_balance
 
 
 def map_from_dynamodb_format(data: dict) -> dict:

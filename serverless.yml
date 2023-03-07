@@ -85,29 +85,29 @@ functions:
           request:
             schemas:
               application/json: new-operation-model
+  GetBalance:
+    handler: lambdas.get_balance.main.handler
+    memorySize: 256
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/get_balance/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - GetBalanceLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /get-balance
+          method: get
 
-  hello:
-    handler: handler.hello
+  HealthCheck:
+    handler: healthcheck.hello
     layers:
       - Ref: PythonRequirementsLambdaLayer
     events:
       - http:
-          path: /hello
+          path: /healthcheck
           method: get
-
-  helloAuthRequired:
-    handler: hello_auth_required.hello
-    layers:
-      - Ref: PythonRequirementsLambdaLayer
-    events:
-      - http:
-          path: /hello-auth
-          method: get
-          cors: true
-          authorizer:
-            type: COGNITO_USER_POOLS
-            authorizerId:
-              Ref: ArithmeticCalculatorAuthorizer
 
 resources:
   ${file(./resources.yml)}

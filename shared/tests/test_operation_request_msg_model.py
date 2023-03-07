@@ -2,6 +2,7 @@ import pytest
 
 from shared.fixture_utils import json_fixture
 from shared.models.operation_request_msg_model import OperationEventMessage
+from shared.error_handling import HTTPException
 
 OPERATION_REQUEST_VALID = json_fixture('operation_request_valid.json')
 OPERATION_REQUEST_NUM2_MISSING = json_fixture('operation_request_num2_missing.json')
@@ -20,11 +21,11 @@ def test_operation_request_success():
 
 def test_num2_missing_raises_validation_error():
     data = OPERATION_REQUEST_NUM2_MISSING
-    with pytest.raises(ValueError):
+    with pytest.raises(HTTPException):
         OperationEventMessage(**data)
 
 
 def test_num1_missing_raises_validation_error():
     data = OPERATION_REQUEST_NUM1_MISSING
-    with pytest.raises(ValueError):
+    with pytest.raises(HTTPException):
         OperationEventMessage(**data)

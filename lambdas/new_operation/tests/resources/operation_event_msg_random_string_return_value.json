@@ -1,0 +1,10 @@
+{
+  "user_id": "77d46173-1d59-48d0-8b75-eaa76eb857b2",
+  "record_id": "1a40eea3-bd09-4ee9-8b21-c7b50c536f3d",
+  "operation": {
+    "operation_id": "36d7f5da-d185-4585-8d0b-1dc62f5b0f85",
+    "entity": "OPERATION",
+    "type": "RANDOM_STRING",
+    "cost": 6
+  }
+}

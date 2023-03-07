@@ -7,7 +7,7 @@ Helper functions/classes for JSON serialization and deserialization
 """
 
 
-def json_str_to_dict(data: str) -> dict:
+def json_string_to_dict(data: str) -> dict:
     """
     Deserializes a json str to a dictionary object
     :param data: json str to  serialize
@@ -16,7 +16,7 @@ def json_str_to_dict(data: str) -> dict:
     return json.loads(data, encoding='utf-8')
 
 
-def dict_to_json_str(data: dict) -> str:
+def dict_to_json_string(data: dict) -> str:
     """
     Serializes from a dictionary object to a json string.
     :param data: Dictionary object to serialize

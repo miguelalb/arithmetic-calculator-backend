@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from shared.json_utils import dict_to_json_str
+from shared.json_utils import dict_to_json_string
 
 
 class Base(BaseModel):
@@ -13,4 +13,4 @@ class Base(BaseModel):
         Serializes to a json string
         :return: Json string
         """
-        return dict_to_json_str(self.dict())
+        return dict_to_json_string(self.dict())

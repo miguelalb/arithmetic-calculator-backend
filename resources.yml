@@ -194,6 +194,38 @@ Resources:
           PolicyName: ${self:service}-new-operation-lambda-policy-${sls:stage, "dev"}
       RoleName: ${self:service}-new-operation-lambda-role-${sls:stage, "dev"}
 
+  GetBalanceLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Description: "New Operation Lambda Role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+      Policies:
+        - PolicyDocument: {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Query"
+              ],
+              "Resource": [
+                { "Fn::GetAtt": ["ArithmeticCalculatorTable", "Arn"] },
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI1" ] ]},
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI2" ] ]}
+              ]
+            },
+            ]
+          }
+          PolicyName: ${self:service}-get-balance-lambda-policy-${sls:stage, "dev"}
+      RoleName: ${self:service}-get-balance-lambda-role-${sls:stage, "dev"}
+
 
   ArithmeticCalculatorTable:
     # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-globaltable.html
