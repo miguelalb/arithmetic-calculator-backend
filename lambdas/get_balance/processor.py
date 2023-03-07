@@ -35,12 +35,3 @@ class GetBalanceEventProcessor:
         self.logger.info(f"Returning current balance: {user_record.user_balance} for User: {user_id}")
         return HTTPResponse(status_code=HTTPStatus.OK,
                             body={'UserId': user_id, 'UserBalance': user_record.user_balance})
-
-    def _get_user_id(self, event: dict) -> str:
-        """
-        Extracts the user_id provided by the Amazon Cognito authorizer.
-        :param event: Lambda event
-        :return: User_id
-        """
-        self.logger.info("Extracting the user id from the request.")
-        return event.get('requestContext', {}).get('authorizer', {}).get('claims', {}).get('sub', '')
