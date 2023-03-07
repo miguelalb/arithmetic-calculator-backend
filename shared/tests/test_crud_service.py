@@ -114,6 +114,8 @@ def test_crud_service_list_items_partition_key_only(crud_service):
     crud_service.list_items(pk=pk)
 
     expected = {
+        'ScanIndexForward': False,
+        'Limit': 9999,
         'KeyConditionExpression': Key('PK').eq(pk)
     }
 
@@ -134,6 +136,8 @@ def test_crud_service_list_items_by_global_secondary_index(crud_service):
 
     expected = {
         'IndexName': 'GSI1',
+        'ScanIndexForward': False,
+        'Limit': 9999,
         'KeyConditionExpression': Key('GSI1PK').eq(pk) & Key('GSI1SK').begins_with(condition_value)
     }
 

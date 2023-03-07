@@ -1,0 +1,11 @@
+[
+  {
+    "PK": "Operation",
+    "SK": "Operation#08a76cbd-7fa0-42e6-89c5-4c3e71c45101",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#ADDITION",
+    "entity": "OPERATION",
+    "type": "ADDITION",
+    "cost": 1
+  }
+]

@@ -1,11 +1,13 @@
-from pydantic import BaseModel
+from shared.models.base import Base
 
 from shared.date_utils import get_js_utc_now
 
 
-class RecordBase(BaseModel):
+class RecordBase(Base):
     """
-    The Record acts as a ledger that stores all the operations performed by the user, their cost and the user balance
+    The Record acts as a ledger that stores all the operations
+    performed by the user, their cost and the user balance.
+
     Attribute definitions:
     - operation_id: ID of the operation
     - user_id: ID of the user

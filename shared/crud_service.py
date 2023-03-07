@@ -181,7 +181,9 @@ class CrudService:
                    condition_type: ConditionType = '',
                    condition_value: Any = None,
                    low_value: Any = None,
-                   high_value: Any = None
+                   high_value: Any = None,
+                   ascending: bool = False,
+                   limit: int = 9999
                    ) -> Optional[list]:
         """
         Generic table query abstraction to list items.
@@ -192,6 +194,8 @@ class CrudService:
         :param condition_value: Condition value
         :param low_value: Low value to use in Between condition type
         :param high_value: High value to use in Between condition type
+        :param ascending: Controls the ScanIndexForward parameter
+        :param limit: Limit the amount of records
         :return:
         """
         try:
@@ -217,18 +221,26 @@ class CrudService:
                 if index_name:
                     response = self.table.query(
                         IndexName=index_name,
+                        ScanIndexForward=ascending,
+                        Limit=limit,
                         KeyConditionExpression=Key(partition_key).eq(pk) & condition_expression)
                 else:
                     response = self.table.query(
+                        ScanIndexForward=ascending,
+                        Limit=limit,
                         KeyConditionExpression=Key(partition_key).eq(pk) & condition_expression)
 
                 return response['Items']
 
             if index_name:
                 response = self.table.query(IndexName=index_name,
+                                            ScanIndexForward=ascending,
+                                            Limit=limit,
                                             KeyConditionExpression=Key(partition_key).eq(pk))
             else:
-                response = self.table.query(KeyConditionExpression=Key(partition_key).eq(pk))
+                response = self.table.query(ScanIndexForward=ascending,
+                                            Limit=limit,
+                                            KeyConditionExpression=Key(partition_key).eq(pk))
 
             return response['Items']
 

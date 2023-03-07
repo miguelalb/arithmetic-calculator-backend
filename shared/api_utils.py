@@ -14,7 +14,7 @@ class HTTPResponse:
     """
 
     def __init__(self,
-                 status_code: HTTPStatus,
+                 status_code: Union[HTTPStatus, int],
                  body: Union[dict, list, str]
                  ) -> None:
         self.status_code = int(status_code)

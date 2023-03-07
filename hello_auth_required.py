@@ -6,5 +6,7 @@ def hello(event, context):
         "message": "Authorization Granted: This function requires authorization!",
         "input": event,
     }
+    print("Context")
+    print(context)
 
     return {"statusCode": 200, "body": json.dumps(body)}

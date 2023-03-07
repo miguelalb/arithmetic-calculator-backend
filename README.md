@@ -68,14 +68,14 @@ I don't need to store it in the DynamoDB table, and don't need to satisfy access
 
 With these entity table definitions I can satisfy the following patterns:  
 
-| Access Pattern                   | Table/GSI | Key Condition                        | Notes                                                                             |
-|----------------------------------|-----------|--------------------------------------|-----------------------------------------------------------------------------------|
-| Get Operation by id              | Table     | PK=User#uuid; SK=Operation#uuid      | Get an Operation and all it's attributes such as type, and cost.                  |
-| Get Record by id                 | Table     | PK=User#uuid; SK=Record#uuid         | Get a Record and all it's attributes such as amount, operation_response and date. |
-| List All Operation               | Table     | PK=Operation; SK=STARTS_WITH('Operation') | List all Operations.                                                              |
-| List Operations filtered by type | GSI1      | PK=Operation; SK=STARTS_WITH('Operation#type') | List Operations filtered by type.                                                              |
-| List all User Records            | Table     | PK=User#uuid; SK=STARTS_WITH('Record') | List all Records for this user.                                                              |
-| List User Records filtered by date            | GSI1      | PK=User#uuid;  SK=BETWEEN(Record#date and Record#date) | List Records filtered by date.                                                              |
+| Access Pattern                   | Table/GSI | Key Condition                                                          | Notes                                                                             |
+|----------------------------------|-----------|------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
+| Get Operation by id              | Table     | PK=User#uuid; SK=Operation#uuid                                        | Get an Operation and all it's attributes such as type, and cost.                  |
+| Get Record by id                 | Table     | PK=User#uuid; SK=Record#uuid                                           | Get a Record and all it's attributes such as amount, operation_response and date. |
+| List All Operation               | Table     | PK=Operation; SK=BEGINS_WITH('Operation')                              | List all Operations.                                                              |
+| List Operations filtered by type | GSI1      | PK=Operation; SK=BEGINS_WITH('Operation#type')                         | List Operations filtered by type.                                                              |
+| List all User Records            | Table     | PK=User#uuid; SK=BEGINS_WITH('Record')                                 | List all Records for this user.                                                              |
+| List User Records filtered by date            | GSI1      | PK=User#uuid;  SK=BETWEEN(Record#date and Record#date)                 | List Records filtered by date.                                                              |
 | List User Records filtered by user_balance            | GSI2      | PK=User#uuid;  SK=BETWEEN(Record#user_balance and Record#user_balance) | List Records filtered by user_balance.                                                              |
 
 ## Usage

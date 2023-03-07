@@ -64,7 +64,139 @@ Resources:
         - Fn::GetAtt: [ ArithmeticCalculatorCognitoUserPool, Arn ]
       IdentitySource: method.request.header.Authorization
 
+  ArithmeticOperationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: arithmetic-operation-${opt:stage, 'dev'}
+
+  ArithmeticOperationQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: arithmetic-operation-${opt:stage, 'dev'}
+      VisibilityTimeout: 30
+
+  ArithemticOperationQueueSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint:
+        Fn::GetAtt: [ ArithmeticOperationQueue, Arn ]
+      Protocol: sqs
+      TopicArn:
+        Ref: ArithmeticOperationTopic
+
+  ArithmeticOperationQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument: {
+        "Statement": [{
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "sns.amazonaws.com"
+          },
+          "Action": ["sqs:SendMessage"],
+          "Resource": "*",
+          "Condition": {
+            "ArnEquals": {
+              "aws:SourceArn": {
+                "Ref": "ArithmeticOperationTopic"
+              }
+            }
+          }
+        }]
+      }
+      Queues:
+        - Ref: ArithmeticOperationQueue
+
+  GenerateRandomStringTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: generate-random-string-${opt:stage, 'dev'}
+
+  GenerateRandomStringQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: generate-random-string-${opt:stage, 'dev'}
+      VisibilityTimeout: 30
+
+  GenerateRandomStringQueueSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      Endpoint:
+        Fn::GetAtt: [ GenerateRandomStringQueue, Arn ]
+      Protocol: sqs
+      TopicArn:
+        Ref: GenerateRandomStringTopic
+
+  GenerateRandomStringQueuePolicy:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument: {
+        "Statement": [ {
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "sns.amazonaws.com"
+          },
+          "Action": [ "sqs:SendMessage" ],
+          "Resource": "*",
+          "Condition": {
+            "ArnEquals": {
+              "aws:SourceArn": {
+                "Ref": "GenerateRandomStringTopic"
+              }
+            }
+          }
+        } ]
+      }
+      Queues:
+        - Ref: GenerateRandomStringQueue
+
+  NewOperationLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Description: "New Operation Lambda Role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+      Policies:
+        - PolicyDocument: {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "sns:Publish",
+                "sns:CreateTopic"
+              ],
+              "Resource": [
+                { "Ref": "ArithmeticOperationTopic" },
+                { "Ref": "GenerateRandomStringTopic" }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Query",
+                "dynamodb:PutItem"
+              ],
+              "Resource": [
+                { "Fn::GetAtt": ["ArithmeticCalculatorTable", "Arn"] },
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI1" ] ]},
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI2" ] ]}
+              ]
+            },
+            ]
+          }
+          PolicyName: ${self:service}-new-operation-lambda-policy-${sls:stage, "dev"}
+      RoleName: ${self:service}-new-operation-lambda-role-${sls:stage, "dev"}
+
+
   ArithmeticCalculatorTable:
+    # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-globaltable.html
     Type: AWS::DynamoDB::Table
     Properties:
       AttributeDefinitions:

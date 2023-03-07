@@ -1,7 +1,7 @@
 from enum import Enum
 from uuid import uuid4
 
-from pydantic import BaseModel
+from shared.models.base import Base
 
 
 class OperationType(str, Enum):
@@ -13,9 +13,9 @@ class OperationType(str, Enum):
     RANDOM_STRING = 'RANDOM_STRING'
 
 
-class OperationBase(BaseModel):
+class OperationBase(Base):
     """
-    The Operation that will be performed by the user.
+    The Operation that the user wants to perform.
     """
     entity: str = "OPERATION"
     type: OperationType

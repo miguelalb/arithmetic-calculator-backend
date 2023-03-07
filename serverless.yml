@@ -68,17 +68,23 @@ package:
 
 
 functions:
-  NewOperationRequest:
-    handler: lambdas.new_operation_request.main.handler
+  NewOperation:
+    handler: lambdas.new_operation.main.handler
+    memorySize: 256
     layers:
       - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/new_operation/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - NewOperationLambdaRole
+        - Arn
     events:
       - http:
-          path: /new-operation-request
+          path: /new-operation
           method: post
           request:
             schemas:
-              application/json: new-operation-request
+              application/json: new-operation-model
 
   hello:
     handler: handler.hello
