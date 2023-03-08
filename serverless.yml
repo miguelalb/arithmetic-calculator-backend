@@ -13,8 +13,12 @@ provider:
         ${file(./api/schema-definitions.yml)}
 
 plugins:
+  # Needed for Python requirements packaging
   - serverless-python-requirements
+  # Stores CloudFormation and Serverless stack output to a file
   - serverless-stack-output
+  # Provides API Gateway throttling configuration for this service
+  - serverless-api-gateway-throttling
 
 custom:
   pythonRequirements:
@@ -37,10 +41,20 @@ custom:
       - ${self:custom.defaultSignOutURL.dev}
     prod:
       - ${self:custom.defaultSignOutURL.prod}
-  tableName: ${self:service}-${sls:stage}-ArithmeticCalculatorTable
+  tableName: ${self:service}-${opt:stage, self:provider.stage}-ArithmeticCalculatorTable
   output:
     handler: scripts/output.handler
     file: env.json
+  # Default throttling for all API Gateway endpoints on this service
+  apiGatewayThrottling:
+    maxRequestsPerSecond: ${self:custom.maxRequests.${opt:stage, self:provider.stage}}
+    maxConcurrentRequests: ${self:custom.maxConcurrency.${opt:stage, self:provider.stage}}
+  maxRequests:
+    dev: 5
+    prod: 10
+  maxConcurrency:
+    dev: 50
+    prod: 100
 
 package:
   individually: true  # Package each function individually

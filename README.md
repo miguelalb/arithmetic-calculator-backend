@@ -78,6 +78,15 @@ With these entity table definitions I can satisfy the following patterns:
 | List User Records filtered by date            | GSI1      | PK=User#uuid;  SK=BETWEEN(Record#date and Record#date)                 | List Records filtered by date.                                                              |
 | List User Records filtered by user_balance            | GSI2      | PK=User#uuid;  SK=BETWEEN(Record#user_balance and Record#user_balance) | List Records filtered by user_balance.                                                              |
 
+
+### API Throttling  
+Throttling is enabled by default on API Gateway in a stage configurations however, the services you deploy default to a limit of 10k requests/second and 
+with a burst of 5000 concurrent request which is the default AWS Account level limit per region.   
+This means that a DDOS attack (or a client error) can take down all your APIs in the entire region which is not good at all. As a solution, I used the `serverless-api-gateway-throttling`
+plugin to assign throttling limits to this service.   
+The default throttling limits for this service are 5 requests/second for dev and 10 requests/second for prod and can burst up to 50 concurrent requests  dev and up to 100 concurrent requests in prod.
+This can be configured in the `serverless.yml` custom section.
+
 ## Usage
 
 ### Deployment

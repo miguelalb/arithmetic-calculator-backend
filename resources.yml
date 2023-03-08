@@ -41,14 +41,14 @@ Resources:
         - openid
       UserPoolId:
         Ref: "ArithmeticCalculatorCognitoUserPool"
-      CallbackURLs: ${self:custom.callBackUrls.${opt:stage, 'dev'}}
-      LogoutURLs: ${self:custom.signOutURLs.${opt:stage, 'dev'}}
+      CallbackURLs: ${self:custom.callBackUrls.${opt:stage, self:provider.stage}}
+      LogoutURLs: ${self:custom.signOutURLs.${opt:stage, self:provider.stage}}
 
   ArithmeticCalculatorCognitoUserPoolDomain:
     # Reference: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cognito-userpooldomain.html
     Type: AWS::Cognito::UserPoolDomain
     Properties:
-      Domain: ${sls:stage, "dev"}-${self:service}
+      Domain: ${opt:stage, self:provider.stage}-${self:service}
       UserPoolId:
         Ref: "ArithmeticCalculatorCognitoUserPool"
 
@@ -67,12 +67,12 @@ Resources:
   ArithmeticOperationTopic:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: arithmetic-operation-${opt:stage, 'dev'}
+      TopicName: arithmetic-operation-${opt:stage, self:provider.stage}
 
   ArithmeticOperationQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: arithmetic-operation-${opt:stage, 'dev'}
+      QueueName: arithmetic-operation-${opt:stage, self:provider.stage}
       VisibilityTimeout: 30
 
   ArithemticOperationQueueSubscription:
@@ -111,12 +111,12 @@ Resources:
   GenerateRandomStringTopic:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: generate-random-string-${opt:stage, 'dev'}
+      TopicName: generate-random-string-${opt:stage, self:provider.stage}
 
   GenerateRandomStringQueue:
     Type: AWS::SQS::Queue
     Properties:
-      QueueName: generate-random-string-${opt:stage, 'dev'}
+      QueueName: generate-random-string-${opt:stage, self:provider.stage}
       VisibilityTimeout: 30
 
   GenerateRandomStringQueueSubscription:
@@ -193,8 +193,8 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-newOperation-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-newOperation-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-newOperation-lambda-policy-${opt:stage, self:provider.stage}
+      RoleName: ${self:service}-newOperation-lambda-role-${opt:stage, self:provider.stage}
 
   GetBalanceLambdaRole:
     Type: AWS::IAM::Role
@@ -225,8 +225,8 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-getBalance-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-getBalance-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-getBalance-lambda-policy-${opt:stage, self:provider.stage}
+      RoleName: ${self:service}-getBalance-lambda-role-${opt:stage, self:provider.stage}
 
   PollResultsLambdaRole:
     Type: AWS::IAM::Role
@@ -257,10 +257,10 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-pollResults-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-pollResults-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-pollResults-lambda-policy-${opt:stage, self:provider.stage}
+      RoleName: ${self:service}-pollResults-lambda-role-${opt:stage, self:provider.stage}
 
-  ArithmeticOperationWorkerLambdaRole:
+  OperationWorkerLambdaRole:
     Type: AWS::IAM::Role
     Properties:
       AssumeRolePolicyDocument:
@@ -270,7 +270,7 @@ Resources:
             Principal:
               Service: lambda.amazonaws.com
             Action: sts:AssumeRole
-      Description: "Arithmetic Operation Worker Lambda Role"
+      Description: "Role shared by Operation worker Lambdas"
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
         - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
@@ -305,8 +305,8 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-arithmeticWorker-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-arithmeticWorker-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-operationWorker-lambda-policy-${opt:stage, self:provider.stage}
+      RoleName: ${self:service}-operationWorker-lambda-role-${opt:stage, self:provider.stage}
 
 
   ArithmeticCalculatorTable:
@@ -377,8 +377,8 @@ Outputs:
 
   CallbackURL:
     Description: "A callback URL is where the user is redirected to after a successful sign-in."
-    Value: ${self:custom.defaultCallBackURL.${opt:stage, 'dev'}}
+    Value: ${self:custom.defaultCallBackURL.${opt:stage, self:provider.stage}}
 
   SignOutURL:
     Description: "A sign-out URL is where your user is redirected to after signing out."
-    Value: ${self:custom.defaultSignOutURL.${opt:stage, 'dev'}}
+    Value: ${self:custom.defaultSignOutURL.${opt:stage, self:provider.stage}}

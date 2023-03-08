@@ -30,27 +30,42 @@ def map_to_sns_topic_format(data) -> dict:
     return data
 
 
-def validate_data(data):
-    if data.get('num1') and not data.get('num2'):
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
-                            msg='needs a second value for operation to be complete')
-
-    if data.get('num2') and not data.get('num1'):
-        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
-                            msg='needs a first value for operation to be complete')
-
+def validate_data(data) -> None:
+    """
+    Operation input data validation
+    :param data: input data
+    """
     operation = data['operation']
     operation_type = operation['type'] if isinstance(operation, dict) else operation.type
 
+    if operation_type == OperationType.RANDOM_STRING:
+        pass
+
+    elif operation_type == OperationType.SQUARE_ROOT:
+        validate_square_root_input_data(data)
+    else:
+        validate_arithmetic_operation_data(data, operation_type)
+
+
+def validate_square_root_input_data(data):
+    single_number = data.get('single_number')
+    if not single_number:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            msg='Invalid operation: Provide a number for the sqrt.')
+    if single_number < 0:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            msg='Invalid operation: Cannot get square root of negative number.')
+
+
+def validate_arithmetic_operation_data(data, operation_type):
+    if data.get('num1') and not data.get('num2'):
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            msg='Invalid Operation: needs a second value for operation to be complete')
+    if data.get('num2') and not data.get('num1'):
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            msg='Invalid operation: needs a first value for operation to be complete')
     if operation_type == OperationType.DIVISION and data.get('num2') == 0:
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             msg='Invalid operation: Cannot divide a number by Zero')
 
-    if operation_type == OperationType.SQUARE_ROOT:
-        single_number = data.get('single_number')
-        if not single_number:
-            raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
-                                msg='Invalid operation: Provide a number for the sqrt.')
-        if single_number < 0:
-            raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
-                                msg='Invalid operation: Cannot get square root of negative number.')
+

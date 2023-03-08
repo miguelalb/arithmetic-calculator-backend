@@ -1,10 +1,11 @@
 import json
+from http import HTTPStatus
 
 
 def hello(event, context):
     body = {
-        "message": "Go Serverless v3.0! Your function executed successfully!",
-        "input": event,
+        "message": "Arithmetic Calculator REST API. Your function executed successfully!",
+        "status": "Healthy!",
     }
 
-    return {"statusCode": 200, "body": json.dumps(body)}
+    return {"statusCode": HTTPStatus.OK, "body": json.dumps(body)}
