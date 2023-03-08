@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import pytest
 
 from mock import MagicMock, patch
@@ -29,7 +31,7 @@ def reset_mocks():
     mock_operation_event_message.reset_mock()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def processor() -> NewOperationEventProcessor:
     reset_mocks()
     return NewOperationEventProcessor(logger=mock_logger,
@@ -51,6 +53,7 @@ def test_new_operation_event_arithmetic_success(processor):
     mock_sns_service.publish_message.return_value = 'f7121d00-c7c5-4290-8cc7-1ccc7460e3e8'
     result = processor.process_new_operation_event(event=event)
 
+    assert result.status_code == HTTPStatus.ACCEPTED
     assert json_string_to_dict(result.body) == {
         'MessageId': 'f7121d00-c7c5-4290-8cc7-1ccc7460e3e8',
         'RecordId': '1db72b27-7de6-4bc0-9c7c-44540e6311a5'
@@ -71,6 +74,7 @@ def test_new_operation_event_random_string_success(processor):
     mock_sns_service.publish_message.return_value = ''
     result = processor.process_new_operation_event(event=event)
 
+    assert result.status_code == HTTPStatus.ACCEPTED
     assert 'RecordId' in result.body
     assert 'MessageId' in result.body
     mock_sns_service.publish_message.assert_called_with(topic_name='random-string-topic',

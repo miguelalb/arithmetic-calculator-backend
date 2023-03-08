@@ -12,7 +12,7 @@ mock_table = MagicMock()
 CRUD_SERVICE_SAMPLE_DATA_ITEM = json_fixture('crud_service_sample_data_item.json')
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def crud_service():
     return CrudService(logger=mock_logger,
                        table=mock_table)

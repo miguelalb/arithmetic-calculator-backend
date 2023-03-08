@@ -47,12 +47,12 @@ custom:
     file: env.json
   # Default throttling for all API Gateway endpoints on this service
   apiGatewayThrottling:
-    maxRequestsPerSecond: ${self:custom.maxRequests.${opt:stage, self:provider.stage}}
-    maxConcurrentRequests: ${self:custom.maxConcurrency.${opt:stage, self:provider.stage}}
-  maxRequests:
+    maxRequestsPerSecond: ${self:custom.maxApiRequests.${opt:stage, self:provider.stage}}
+    maxConcurrentRequests: ${self:custom.maxApiConcurrency.${opt:stage, self:provider.stage}}
+  maxApiRequests:
     dev: 5
     prod: 10
-  maxConcurrency:
+  maxApiConcurrency:
     dev: 50
     prod: 100
 
@@ -135,15 +135,35 @@ functions:
               paths:
                 record_id: true
 
+  DeleteRecord:
+    handler: lambdas.delete_record.main.handler
+    memorySize: 256
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/delete_record/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - DeleteRecordLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /delete-record/{record_id}
+          method: delete
+          request:
+            parameters:
+              paths:
+                record_id: true
+
   ArithmeticOperationWorker:
     handler: lambdas.arithmetic_operation_worker.main.handler
     memorySize: 512
+    timeout: 30
     layers:
       - Ref: PythonRequirementsLambdaLayer
     environment: ${file(./lambdas/arithmetic_operation_worker/env.yml):${opt:stage, self:provider.stage}}
     role:
        Fn::GetAtt:
-        - ArithmeticOperationWorkerLambdaRole
+        - OperationWorkerLambdaRole
         - Arn
     events:
       - sqs:
@@ -156,6 +176,7 @@ functions:
     handler: healthcheck.hello
     layers:
       - Ref: PythonRequirementsLambdaLayer
+    memorySize: 128
     events:
       - http:
           path: /healthcheck

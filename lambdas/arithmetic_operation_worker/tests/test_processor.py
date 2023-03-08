@@ -18,7 +18,7 @@ def reset_mocks():
     mock_crud_service.reset_mock()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def processor() -> ArithmeticOperationWorkerProcessor:
     reset_mocks()
     return ArithmeticOperationWorkerProcessor(logger=mock_logger,

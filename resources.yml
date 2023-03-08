@@ -73,7 +73,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: arithmetic-operation-${opt:stage, self:provider.stage}
-      VisibilityTimeout: 30
+      VisibilityTimeout: 180
 
   ArithemticOperationQueueSubscription:
     Type: AWS::SNS::Subscription
@@ -117,7 +117,7 @@ Resources:
     Type: AWS::SQS::Queue
     Properties:
       QueueName: generate-random-string-${opt:stage, self:provider.stage}
-      VisibilityTimeout: 30
+      VisibilityTimeout: 180
 
   GenerateRandomStringQueueSubscription:
     Type: AWS::SNS::Subscription
@@ -227,6 +227,38 @@ Resources:
           }
           PolicyName: ${self:service}-getBalance-lambda-policy-${opt:stage, self:provider.stage}
       RoleName: ${self:service}-getBalance-lambda-role-${opt:stage, self:provider.stage}
+
+  DeleteRecordLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Description: "Delete Record Lambda Role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+      Policies:
+        - PolicyDocument: {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:UpdateItem"
+              ],
+              "Resource": [
+                { "Fn::GetAtt": ["ArithmeticCalculatorTable", "Arn"] },
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI1" ] ]},
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI2" ] ]}
+              ]
+            },
+            ]
+          }
+          PolicyName: ${self:service}-deleteRecord-lambda-policy-${opt:stage, self:provider.stage}
+      RoleName: ${self:service}-deleteRecord-lambda-role-${opt:stage, self:provider.stage}
 
   PollResultsLambdaRole:
     Type: AWS::IAM::Role

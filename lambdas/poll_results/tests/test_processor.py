@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import pytest
 from mock import MagicMock
 
@@ -19,7 +21,7 @@ def reset_mocks():
     mock_crud_service.reset_mock()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def processor() -> PollResultsProcessor:
     reset_mocks()
     return PollResultsProcessor(logger=mock_logger,
@@ -33,6 +35,7 @@ def test_poll_results_success(processor):
 
     expected = POLL_RESULTS_VALID_EXPECTED
 
+    assert result.status_code == HTTPStatus.OK
     assert json_string_to_dict(result.body) == expected
 
 

@@ -61,7 +61,7 @@ class NewOperationEventProcessor:
                                  'OperationRequest': operation_event_msg.dict(),
                                  'MessageId': message_id
                              })
-            return HTTPResponse(status_code=HTTPStatus.OK,
+            return HTTPResponse(status_code=HTTPStatus.ACCEPTED,
                                 body={'RecordId': operation_event_msg.record_id, 'MessageId': message_id})
 
         user_record = RecordOUT(**user_records_db[0])
@@ -76,7 +76,7 @@ class NewOperationEventProcessor:
                              'OperationRequest': operation_event_msg.dict(),
                              'MessageId': message_id
                          })
-        return HTTPResponse(status_code=HTTPStatus.OK,
+        return HTTPResponse(status_code=HTTPStatus.ACCEPTED,
                             body={'RecordId': operation_event_msg.record_id, 'MessageId': message_id})
 
     def _get_topic_name_for_operation_type(self, operation_type: OperationType) -> str:

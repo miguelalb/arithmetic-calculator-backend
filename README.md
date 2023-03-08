@@ -172,6 +172,6 @@ Which should result in response similar to the following:
 ```
 {
     "statusCode": 200,
-    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully!\", \"input\": {}}"
+    "body": "{\"message\": \"Arithmetic Calculator REST API. Your function executed successfully!\", \"status\": \"Healthy!\"}"
 }
 ```

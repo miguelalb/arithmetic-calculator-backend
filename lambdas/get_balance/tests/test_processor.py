@@ -1,3 +1,5 @@
+from http import HTTPStatus
+
 import pytest
 
 from mock import MagicMock
@@ -20,7 +22,7 @@ def reset_mocks():
     mock_crud_service.reset_mock()
 
 
-@pytest.fixture()
+@pytest.fixture(scope="module")
 def processor() -> GetBalanceEventProcessor:
     reset_mocks()
     return GetBalanceEventProcessor(logger=mock_logger,
@@ -38,6 +40,7 @@ def test_get_balance_first_user_operation_returns_default_initial_balance(proces
         'UserBalance': DEFAULT_INITIAL_USER_BALANCE
     }
 
+    assert result.status_code == HTTPStatus.OK
     assert json_string_to_dict(result.body) == expected
 
 
@@ -52,4 +55,5 @@ def test_get_balance_returns_current_balance(processor):
         'UserBalance': LIST_ITEMS_GET_USER_RECORDS_BALANCE_RETURN[0]['user_balance']
     }
 
+    assert result.status_code == HTTPStatus.OK
     assert json_string_to_dict(result.body) == expected
