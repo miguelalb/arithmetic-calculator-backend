@@ -82,12 +82,14 @@ With these entity table definitions I can satisfy the following patterns:
 
 ### Deployment
 
-In order to deploy the example, you need to run the following command:
+In order to deploy this application, you need to run the following command:
 
 ```
 $ serverless deploy
 ```
-This defaults to a dev version of the lambdas.
+This defaults to a dev version of the lambdas.  
+
+*__Note__: Make sure you have the appropriate AWS IAM permissions to deploy this stack.*
 
 ### Outputs:
 After running deploy, an `env.json` file will be created in the root of the project.   

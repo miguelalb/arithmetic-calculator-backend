@@ -81,6 +81,7 @@ Resources:
       Endpoint:
         Fn::GetAtt: [ ArithmeticOperationQueue, Arn ]
       Protocol: sqs
+      RawMessageDelivery: true
       TopicArn:
         Ref: ArithmeticOperationTopic
 
@@ -124,6 +125,7 @@ Resources:
       Endpoint:
         Fn::GetAtt: [ GenerateRandomStringQueue, Arn ]
       Protocol: sqs
+      RawMessageDelivery: true
       TopicArn:
         Ref: GenerateRandomStringTopic
 
@@ -191,8 +193,8 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-new-operation-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-new-operation-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-newOperation-lambda-policy-${sls:stage, "dev"}
+      RoleName: ${self:service}-newOperation-lambda-role-${sls:stage, "dev"}
 
   GetBalanceLambdaRole:
     Type: AWS::IAM::Role
@@ -223,8 +225,8 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-get-balance-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-get-balance-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-getBalance-lambda-policy-${sls:stage, "dev"}
+      RoleName: ${self:service}-getBalance-lambda-role-${sls:stage, "dev"}
 
   PollResultsLambdaRole:
     Type: AWS::IAM::Role
@@ -255,8 +257,56 @@ Resources:
             },
             ]
           }
-          PolicyName: ${self:service}-poll-results-lambda-policy-${sls:stage, "dev"}
-      RoleName: ${self:service}-poll-results-lambda-role-${sls:stage, "dev"}
+          PolicyName: ${self:service}-pollResults-lambda-policy-${sls:stage, "dev"}
+      RoleName: ${self:service}-pollResults-lambda-role-${sls:stage, "dev"}
+
+  ArithmeticOperationWorkerLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Description: "Arithmetic Operation Worker Lambda Role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
+      Policies:
+        - PolicyDocument: {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "sqs:ReceiveMessage",
+                "sqs:DeleteMessage",
+                "sqs:GetQueueAttributes",
+                "sqs:ChangeMessageVisibility",
+                "sqs:GetQueueAttributes",
+                "sqs:GetQueueUrl"
+              ],
+              "Resource": [
+                { "Fn::GetAtt" : ["ArithmeticOperationQueue", "Arn"]}
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Query",
+                "dynamodb:PutItem"
+              ],
+              "Resource": [
+                { "Fn::GetAtt": ["ArithmeticCalculatorTable", "Arn"] },
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI1" ] ]},
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI2" ] ]}
+              ]
+            },
+            ]
+          }
+          PolicyName: ${self:service}-arithmeticWorker-lambda-policy-${sls:stage, "dev"}
+      RoleName: ${self:service}-arithmeticWorker-lambda-role-${sls:stage, "dev"}
 
 
   ArithmeticCalculatorTable:

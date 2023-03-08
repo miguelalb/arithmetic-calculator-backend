@@ -32,6 +32,7 @@ class NewOperationEventProcessor:
         body = json_string_to_dict(event.get('body', '{}'))
         num1 = body.get('num1')
         num2 = body.get('num2')
+        single_number = body.get('single_number')
         operation_type = body.get('operation_type')
 
         self.logger.info(f"Processing Operation request for User {user_id}",
@@ -45,6 +46,7 @@ class NewOperationEventProcessor:
         operation_event_msg = OperationEventMessage(user_id=user_id,
                                                     num1=num1,
                                                     num2=num2,
+                                                    single_number=single_number,
                                                     operation=operation)
 
         user_records_db = get_user_most_recent_record(crud_service=self.crud_service,

@@ -1,4 +1,6 @@
 import os
+from typing import Union
+
 from shared.models.base import Base
 
 from shared.date_utils import get_js_utc_now
@@ -24,7 +26,7 @@ class RecordBase(Base):
     user_id: str
     amount: int
     user_balance: int
-    operation_response: str
+    operation_response: Union[str, int, float]
     date: int  # epoch
     deleted: bool = False
 
@@ -70,7 +72,7 @@ def map_to_dynamodb_format(data: dict) -> dict:
     """
     record_uuid = data.get('record_id', '')
     user_uuid = data.get('user_id', '')
-    date = get_js_utc_now()
+    date = data.get('date', get_js_utc_now())
     user_balance = data.get('user_balance', DEFAULT_INITIAL_USER_BALANCE)
 
     user_balance = zero_negative_balance(user_balance)
@@ -78,7 +80,7 @@ def map_to_dynamodb_format(data: dict) -> dict:
     data['PK'] = f'User#{user_uuid}'
     data['SK'] = f'Record#{record_uuid}'
     data['GSI1PK'] = f'User#{user_uuid}'
-    data['GSI1SK'] = f'Record{date}'
+    data['GSI1SK'] = f'Record#{date}'
     data['GSI2PK'] = f'User#{user_uuid}'
     data['GSI2SK'] = f'Record#{user_balance}'
 

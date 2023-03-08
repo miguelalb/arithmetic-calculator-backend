@@ -1,6 +1,5 @@
 {
   "user_id": "bb18fa47-8fb6-4e3b-b6a6-d188f60e2413",
-  "request_type": "ARITHMETIC_OPERATION",
   "num1": 50,
   "operation": {
     "entity": "OPERATION",

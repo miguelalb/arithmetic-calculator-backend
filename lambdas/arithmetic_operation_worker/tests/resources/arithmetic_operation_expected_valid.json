@@ -1,0 +1,19 @@
+{
+  "item": {
+    "entity": "RECORD",
+    "record_id": "d4b74a76-4773-4bc9-b229-22ed724f04b7",
+    "operation_id": "88213aa9-350f-4711-bc96-28e8282da993",
+    "user_id": "b86ed25a-f978-4ca6-9903-4fd2ef3b6209",
+    "amount": 1,
+    "user_balance": 19,
+    "operation_response": "7.0",
+    "date": 1678232290113,
+    "deleted": false,
+    "PK": "User#b86ed25a-f978-4ca6-9903-4fd2ef3b6209",
+    "SK": "Record#d4b74a76-4773-4bc9-b229-22ed724f04b7",
+    "GSI1PK": "User#b86ed25a-f978-4ca6-9903-4fd2ef3b6209",
+    "GSI1SK": "Record#1678232290113",
+    "GSI2PK": "User#b86ed25a-f978-4ca6-9903-4fd2ef3b6209",
+    "GSI2SK": "Record#19"
+  }
+}

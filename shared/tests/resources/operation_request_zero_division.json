@@ -1,10 +1,11 @@
 {
   "user_id": "bb18fa47-8fb6-4e3b-b6a6-d188f60e2413",
-  "num2": 20,
+  "num1": 20,
+  "num2": 0,
   "operation": {
     "entity": "OPERATION",
     "operation_id": "095d1d3e-b42d-4734-a17b-325dc5c8700c",
-    "type": "ADDITION",
+    "type": "DIVISION",
     "cost": "1"
   }
 }

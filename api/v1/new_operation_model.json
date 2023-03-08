@@ -18,6 +18,10 @@
     "num2": {
       "type": "number",
       "title": "Second number to do an operation with"
+    },
+    "single_number": {
+      "type": "number",
+      "title": "Number for single number operations i.e. sqrt"
     }
   }
 }

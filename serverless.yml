@@ -5,6 +5,7 @@ frameworkVersion: '3'
 provider:
   name: aws
   runtime: python3.9
+  deploymentMethod: direct
   stage: ${opt:stage, 'dev'}
   apiGateway:
     request:
@@ -120,6 +121,22 @@ functions:
               paths:
                 record_id: true
 
+  ArithmeticOperationWorker:
+    handler: lambdas.arithmetic_operation_worker.main.handler
+    memorySize: 512
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/arithmetic_operation_worker/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - ArithmeticOperationWorkerLambdaRole
+        - Arn
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - ArithmeticOperationQueue
+              - Arn
 
   HealthCheck:
     handler: healthcheck.hello

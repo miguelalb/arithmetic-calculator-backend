@@ -7,6 +7,8 @@ from shared.error_handling import HTTPException
 OPERATION_REQUEST_VALID = json_fixture('operation_request_valid.json')
 OPERATION_REQUEST_NUM2_MISSING = json_fixture('operation_request_num2_missing.json')
 OPERATION_REQUEST_NUM1_MISSING = json_fixture('operation_request_num1_missing.json')
+OPERATION_REQUEST_ZERO_DIVISION = json_fixture('operation_request_zero_division.json')
+OPERATION_REQUEST_SQRT_NEGATIVE_NUMBER = json_fixture('operation_request_sqrt_negative_number.json')
 
 
 def test_operation_request_success():
@@ -27,5 +29,17 @@ def test_num2_missing_raises_validation_error():
 
 def test_num1_missing_raises_validation_error():
     data = OPERATION_REQUEST_NUM1_MISSING
+    with pytest.raises(HTTPException):
+        OperationEventMessage(**data)
+
+
+def test_zero_division_raises_validation_error():
+    data = OPERATION_REQUEST_ZERO_DIVISION
+    with pytest.raises(HTTPException):
+        OperationEventMessage(**data)
+
+
+def test_sqrt_negative_number_raises_validation_error():
+    data = OPERATION_REQUEST_SQRT_NEGATIVE_NUMBER
     with pytest.raises(HTTPException):
         OperationEventMessage(**data)

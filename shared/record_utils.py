@@ -3,11 +3,12 @@ Common helper/utility functions used for Record entity
 """
 from http import HTTPStatus
 from logging import Logger
+from typing import Union
 
 from shared.crud_service import ConditionType, CrudService
 from shared.date_utils import get_js_utc_now
 from shared.error_handling import HTTPException
-from shared.models.operation_model import OperationOUT
+from shared.models.operation_model import OperationOUT, Operation
 from shared.models.record_model import RecordOUT
 
 
@@ -26,7 +27,10 @@ def is_user_first_operation(logger: Logger, user_records_db: list) -> bool:
     return not user_records_db
 
 
-def check_user_has_sufficient_balance(logger: Logger, operation: OperationOUT, recent_record: RecordOUT) -> None:
+def check_user_has_sufficient_balance(logger: Logger,
+                                      operation: Union[OperationOUT, Operation],
+                                      recent_record: RecordOUT
+                                      ) -> None:
     """
     Checks if the user has sufficient balance to cover for the operation cost
     :param logger: logger

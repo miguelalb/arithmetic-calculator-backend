@@ -5,7 +5,7 @@ from uuid import uuid4
 from shared.models.base import Base
 from shared.error_handling import HTTPException
 
-from shared.models.operation_model import Operation
+from shared.models.operation_model import Operation, OperationType
 
 
 class OperationEventMessage(Base):
@@ -16,6 +16,7 @@ class OperationEventMessage(Base):
     record_id: str
     num1: Optional[Union[float, int]] = None
     num2: Optional[Union[float, int]] = None
+    single_number: Optional[Union[float, int]] = None
     operation: Operation
 
     def __init__(self, **data):
@@ -37,3 +38,19 @@ def validate_data(data):
     if data.get('num2') and not data.get('num1'):
         raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
                             msg='needs a first value for operation to be complete')
+
+    operation = data['operation']
+    operation_type = operation['type'] if isinstance(operation, dict) else operation.type
+
+    if operation_type == OperationType.DIVISION and data.get('num2') == 0:
+        raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                            msg='Invalid operation: Cannot divide a number by Zero')
+
+    if operation_type == OperationType.SQUARE_ROOT:
+        single_number = data.get('single_number')
+        if not single_number:
+            raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                                msg='Invalid operation: Provide a number for the sqrt.')
+        if single_number < 0:
+            raise HTTPException(status_code=HTTPStatus.BAD_REQUEST,
+                                msg='Invalid operation: Cannot get square root of negative number.')
