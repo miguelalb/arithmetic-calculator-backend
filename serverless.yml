@@ -95,7 +95,7 @@ functions:
         - Arn
     events:
       - http:
-          path: /new-operation
+          path: /operations
           method: post
           request:
             schemas:
@@ -113,7 +113,7 @@ functions:
         - Arn
     events:
       - http:
-          path: /get-balance
+          path: /users/user-balance
           method: get
 
   PollResults:
@@ -128,7 +128,7 @@ functions:
         - Arn
     events:
       - http:
-          path: /poll-results/{record_id}
+          path: /operations/poll-results/{record_id}
           method: get
           request:
             parameters:
@@ -147,12 +147,38 @@ functions:
         - Arn
     events:
       - http:
-          path: /delete-record/{record_id}
+          path: /records/{record_id}
           method: delete
           request:
             parameters:
               paths:
                 record_id: true
+
+  ListRecords:
+    handler: lambdas.list_records.main.handler
+    memorySize: 512
+    timeout: 30
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/delete_record/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - ListRecordsLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /records
+          method: get
+          request:
+            parameters:
+              querystrings:
+                page: false
+                per_page: false
+                date_start: false
+                date_end: false
+                balance_start: false
+                balance_end: false
+
 
   ArithmeticOperationWorker:
     handler: lambdas.arithmetic_operation_worker.main.handler

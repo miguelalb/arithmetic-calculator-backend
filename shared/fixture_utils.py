@@ -1,5 +1,6 @@
 import importlib
 from pathlib import Path
+from typing import Union
 
 import simplejson as json
 
@@ -8,7 +9,7 @@ Helper functions to resolve file path location when loading fixtures.
 """
 
 
-def json_fixture(filename: str) -> dict:
+def json_fixture(filename: str) -> Union[dict, list]:
     """Resolving the base path from the module location as opposed to relative to the directory from which
     the test was launched allows more flexibility (e.g. running tests from within an IDE as well as via tox).
     """

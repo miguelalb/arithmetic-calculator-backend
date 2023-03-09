@@ -1,11 +1,11 @@
+"""
+Helper functions/classes for the API Gateway response handling
+"""
+
 from http import HTTPStatus
 from typing import Union
 
 from shared.json_utils import dict_to_json_string
-
-"""
-Helper functions/classes for the API response handling
-"""
 
 
 class HTTPResponse:
