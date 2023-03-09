@@ -43,16 +43,16 @@ class ListRecordsProcessor:
                          extra={'Payload': payload})
         records_queryset: List[dict] = self.crud_service.list_items(**payload)
         records_list = [RecordOUT(**record).dict() for record in records_queryset]
-        count = len(records_list)
         items = paginator.paginate(items_list=records_list)
-
+        response_body = {
+            'page': int(page),
+            'per_page': int(per_page),
+            'total': paginator.total,
+            'total_pages': paginator.total_pages,
+            'data': items
+        }
         return HTTPResponse(status_code=HTTPStatus.OK,
-                            body={
-                                'page': int(page),
-                                'per_page': int(per_page),
-                                'count': count,
-                                'items': items
-                            })
+                            body=response_body)
 
     def _evaluate_filter_conditions(self, user_id: str, params: dict) -> dict:
         """
