@@ -15,7 +15,9 @@ authorAvatar: 'https://github.com/miguelalb.png'
 
 This project is a simple calculator that allows users to perform basic mathematical operations (addition, subtraction, multiplication, division) and also generate a random string.
 Each one of these operations have a separate cost per request; users have an initial credit/balance and each request updates their balance accordingly.  
-This Repo contains the code for the **backend**, you can find the [frontend source code here](https://github.com/miguelalb/arithmetic-calculator-frontend).
+This Repo contains the code for the **backend**, you can find the [frontend source code here](https://github.com/miguelalb/arithmetic-calculator-frontend).  
+
+
 ----
 
 ## Table of Contents
