@@ -1,0 +1,11 @@
+{
+  "Type" : "Notification",
+  "MessageId" : "820e7dd1-d565-480a-be10-5f56dcdfb354",
+  "TopicArn" : "arn:aws:sns:us-east-1:123456789:arithmetic-operation-dev",
+  "body" : "{\"user_id\": \"b86ed25a-f978-4ca6-9903-4fd2ef3b6209\", \"record_id\": \"ed6e7338-b666-4f34-9937-08093d6a5059\", \"operation\": {\"entity\": \"OPERATION\", \"type\": \"RANDOM_STRING\", \"cost\": 6, \"operation_id\": \"65a1eca4-2852-477c-952c-9701f90a203e\"}}",
+  "Timestamp" : "2023-03-07T21:01:07.352Z",
+  "SignatureVersion" : "1",
+  "Signature" : "ed68dc6cf848d7809ad3d41f59cf9bd6598d0e0fba418f8fd41952781b62e0",
+  "SigningCertURL" : "https://sns.us-east-1.amazonaws.com/SimpleNotificationService-4e5d9c3a640b679cb2ac.pem",
+  "UnsubscribeURL" : "https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:123456789:arithmetic-operation-dev:34b5d9e3-61fc-448d-912e-d94115b89a3a"
+}

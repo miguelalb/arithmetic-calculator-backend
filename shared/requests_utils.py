@@ -7,6 +7,7 @@ from logging import Logger
 from time import sleep
 
 import requests
+from requests import Response
 
 
 def request_with_retry(logger: Logger,
@@ -16,7 +17,7 @@ def request_with_retry(logger: Logger,
                        query_params: dict = {},
                        max_retries: int = 3,
                        sleep_time_milliseconds: int = 200,
-                       ) -> dict:
+                       ) -> Response:
     """
     Makes a request to an API endpoint and retries with exponential backoff if
     the request is not successful. If the request is successful, it returns the results.
@@ -37,7 +38,7 @@ def request_with_retry(logger: Logger,
         - sleep_time_milliseconds (int): The amount of milliseconds to wait before next request if succeeded
                                         this is to avoid overwhelming the server if the request is in a loop.
     Returns:
-        Response json object (dict)
+        Response object
     """
     logger.info(f"Sending {request_method} request to URL {url}")
     sleep_time = sleep_time_milliseconds / 1000  # sleep before next api call, defaults to 200 milliseconds
@@ -60,18 +61,18 @@ def request_with_retry(logger: Logger,
 
     request_succeeded: bool = lambda x: x < HTTPStatus.BAD_REQUEST
 
-    r = request_func(url=url, params=query_params)
-    if request_succeeded(r.status_code):
+    response = request_func(url=url, params=query_params)
+    if request_succeeded(response.status_code):
         sleep(sleep_time)
-        return r.json()
+        return response
 
     while max_retries > 0:
         logger.info("Retrying API Call")
         sleep(sleep_time)
-        r = request_func(url=url, params=query_params)
+        response = request_func(url=url, params=query_params)
         max_retries = max_retries - 1
         sleep_time = math.pow(sleep_time, 2)  # Exponential Backoff
-        if request_succeeded(r.status_code):
+        if request_succeeded(response.status_code):
             max_retries = 0
             sleep(sleep_time)
-            return r.json()
+            return response

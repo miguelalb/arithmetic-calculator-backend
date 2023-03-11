@@ -220,6 +220,24 @@ functions:
               - ArithmeticOperationQueue
               - Arn
 
+  GenerateRandomStringWorker:
+    handler: lambdas.generate_random_string_worker.main.handler
+    memorySize: 512
+    timeout: 30
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/generate_random_string_worker/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - OperationWorkerLambdaRole
+        - Arn
+    events:
+      - sqs:
+          arn:
+            Fn::GetAtt:
+              - GenerateRandomStringQueue
+              - Arn
+
   HealthCheck:
     handler: healthcheck.hello
     layers:
