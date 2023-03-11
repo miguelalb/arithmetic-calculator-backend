@@ -129,7 +129,7 @@ class ListRecordsProcessor:
                                    date=date_end)
         self._validate_between_condition(start_value=date_start,
                                          end_value=date_end)
-        payload['gsi1'] = True
+        payload.pop('condition_value')
         payload['condition_type'] = ConditionType.BETWEEN
         payload['low_value'] = f'Record#{date_start}'
         payload['high_value'] = f'Record#{date_end}'
@@ -180,7 +180,7 @@ class ListRecordsProcessor:
         self._validate_balance_parameter(balance=balance_end)
         self._validate_between_condition(start_value=balance_start,
                                          end_value=balance_end)
-        payload['gsi2'] = True
+        payload.pop('condition_value')
         payload['condition_type'] = ConditionType.BETWEEN
         payload['low_value'] = f'Record#{balance_start}'
         payload['high_value'] = f'Record#{balance_end}'
@@ -198,6 +198,7 @@ class ListRecordsProcessor:
         payload['gsi2'] = True
         payload['condition_type'] = ConditionType.LESS_THAN_OR_EQUAL
         payload['condition_value'] = f'Record#{balance_end}'
+        return payload
 
     def _validate_balance_parameter(self, balance: str) -> None:
         """

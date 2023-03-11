@@ -44,13 +44,13 @@ This Repo contains the code for the **backend**, you can find the [frontend sour
 ----
 
 ### Tech Stack
-I built this project using Vue.js on the frontend and AWS serverless services on the backend, including AWS Lambda, DynamoDB, SNS, and SQS.   
+I built this project using Vue.js on the frontend and AWS serverless services on the backend including: API Gateway, Cognito, AWS Lambda, DynamoDB, SNS, and SQS.   
 All these resources are defined as infrastructure-as-code on the Serverless framework and using CloudFormation template code to define resources.   
 The backend is decoupled and uses a [pub/sub](https://aws.amazon.com/pub-sub-messaging/) model to perform operations asynchronously, and a [Fanout](https://docs.aws.amazon.com/sns/latest/dg/sns-common-scenarios.html) architecture that allows for parallel asynchronous processing.   
 Additionally, the client-side includes an exponential backoff retry mechanism using Axios with the `axios-retry` library, to ensure reliable polling for the operation results.  
 
 ### Architecture/Data Flow Overview    
-![Architecture Diagram](./ArithmeticCalculatorArchitectureDiagram.png "Architecture Diagram")
+![Architecture Diagram](./ArithmeticCalculatorArchitectureDiagram.png "Architecture Diagram - Author: Miguel Acevedo")
 1. User sends a request to the API Gateway endpoint to perform a mathematical operation, providing their access token and the necessary operation details.
 2. The request is authenticated and authorized by AWS Cognito user pools, ensuring that the user has the necessary permissions to perform the requested operation.
 3. The API Gateway endpoint forwards the request to a Lambda function that checks if the user has sufficient funds to cover the operation cost and publishes a message to an SNS topic.
@@ -59,19 +59,19 @@ Additionally, the client-side includes an exponential backoff retry mechanism us
 6. The client can then poll a REST API endpoint with the unique identifier to retrieve the operation result from the DynamoDB table.
 7. The Vue.js client uses the Axios library with axios-retry to handle API requests and retries, providing a smooth and robust user experience.  
 
-Overall, this architecture separates the calculation logic from the user request and response handling, making the system more decoupled and scalable. The use of AWS services such as Cognito, SNS, SQS, Lambda, and DynamoDB provides a highly available and scalable solution with minimal infrastructure management.
+Overall, this architecture separates the calculation logic from the user request and response handling, making the system more decoupled and scalable. The use of AWS services such as Cognito, API Gateway, SNS, SQS, Lambda, and DynamoDB provide a highly available and scalable solution with minimal infrastructure management.
 
 ### Why I Chose these Technologies
 The decision to use a decoupled architecture with AWS Lambda, API Gateway, SNS and SQS may seem a little complex, and maybe an overkill for this small project, but it allows me to achieve a **highly scalable, fault-tolerant, and resilient system** that can handle a high volume of requests just like any production system out there.  
 
-- By using a pub/sub and Fanout model, I ensure that my system is maintainable, separated by components that can scale independently of each other, and make it easier to add additional components/functionality in the future.
-  *For example, I may have a use case where I want to track transactions that users make as 'events' for data analytics/marketing purposes. I can accomplish this without affecting any current code and without putting any additional load on the Database. Just craft a new service, subscribe it to the topics of interest, and send the events to any marketing system of my choice*.
+- By using a pub/sub and Fanout model, I ensure that my system is maintainable, separated by components that can scale independently of each other, and make it easier to add additional components/functionality in the future without affecting the current system.
+  For example, at some point I may want to track user events and send them to another component for analytics/marketing purposes. With this design I can accomplish this without affecting any current code and without putting any additional load on the Database. Just craft a new service, subscribe it to the topics of interest, and send the events to any marketing system of my choice.
 
 - With the use of serverless technology I eliminate the need for infrastructure management and get automatic scaling out of the box.  
 
 - Vue.js as the front-end technology it's simple, easy to use and very responsive.  
 
-- By using AWS Cognito user pools for authentication and authorization, I ensure a secure and reliable authentication mechanism that I don't have to manage myself. It also provides me with many features I could use in the future such as Social Sign-on, allowing me to focus on the business logic that generates the most value for the application.  
+- By using AWS Cognito user pools for authentication and authorization, I ensure a secure and reliable authentication mechanism that I don't have to manage myself. It also provides me with many features I may want to use in the future such as Social Sign-on, allowing me to focus on the business logic that generates the most value for the application.  
 - The hosted UI that comes with Cognito makes it easy for me to implement a user authentication flow without the need for building a custom solution from scratch.  
 
 Overall, I think the combination of these technologies provides a highly scalable, maintainable, and secure system that can handle a large volume of requests while keeping development time and operation cost low.
@@ -122,7 +122,7 @@ This can be configured in the `serverless.yml` custom section.
 
 ### Deployment
 
-In order to deploy this application, you need to run the following command:
+In order to deploy this application, you need to clone this repo and then run the following command:
 
 ```
 $ serverless deploy

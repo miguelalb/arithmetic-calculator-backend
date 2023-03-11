@@ -1,0 +1,36 @@
+[
+  {
+    "PK": "User#77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "SK": "Record#1a40eea3-bd09-4ee9-8b21-c7b50c536f3d",
+    "GSI1PK": "User#77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "GSI1SK": "Record#1678196485853",
+    "GSI2PK": "User#77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "GSI2SK": "Record#0",
+    "entity": "RECORD",
+    "record_id": "1a40eea3-bd09-4ee9-8b21-c7b50c536f3d",
+    "operation_id": "36d7f5da-d185-4585-8d0b-1dc62f5b0f85",
+    "user_id": "77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "amount": 6,
+    "user_balance": 5,
+    "operation_response": "Insufficient funds",
+    "date": 1678196485853,
+    "deleted": false
+  },
+  {
+    "PK": "User#77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "SK": "Record#fbfd6e3a-0bf9-4f3f-a59b-b629094e3840",
+    "GSI1PK": "User#77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "GSI1SK": "Record#1678196485853",
+    "GSI2PK": "User#77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "GSI2SK": "Record#0",
+    "entity": "RECORD",
+    "record_id": "fbfd6e3a-0bf9-4f3f-a59b-b629094e3840",
+    "operation_id": "a8b5cc80-ecb9-4967-a26f-b0e57a23649c",
+    "user_id": "77d46173-1d59-48d0-8b75-eaa76eb857b2",
+    "amount": 5,
+    "user_balance": 5,
+    "operation_response": "3.0",
+    "date": 1678196483644,
+    "deleted": false
+  }
+]
