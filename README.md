@@ -99,7 +99,7 @@ With these entity table definitions I can satisfy the following patterns:
 
 | Access Pattern                   | Table/GSI | Key Condition                                                          | Notes                                                                             |
 |----------------------------------|-----------|------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| Get Operation by id              | Table     | PK=User#uuid; SK=Operation#uuid                                        | Get an Operation and all it's attributes such as type, and cost.                  |
+| Get Operation by id              | Table     | PK=Operation; SK=Operation#uuid                                        | Get an Operation and all it's attributes such as type, and cost.                  |
 | Get Record by id                 | Table     | PK=User#uuid; SK=Record#uuid                                           | Get a Record and all it's attributes such as amount, operation_response and date. |
 | List All Operation               | Table     | PK=Operation; SK=BEGINS_WITH('Operation')                              | List all Operations.                                                              |
 | List Operations filtered by type | GSI1      | PK=Operation; SK=BEGINS_WITH('Operation#type')                         | List Operations filtered by type.                                                              |

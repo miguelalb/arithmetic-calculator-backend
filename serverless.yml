@@ -179,6 +179,28 @@ functions:
                 balance_start: false
                 balance_end: false
 
+  ListOperations:
+    handler: lambdas.list_operations.main.handler
+    memorySize: 512
+    timeout: 30
+    layers:
+      - Ref: PythonRequirementsLambdaLayer
+    environment: ${file(./lambdas/list_operations/env.yml):${opt:stage, self:provider.stage}}
+    role:
+       Fn::GetAtt:
+        - ListOperationsLambdaRole
+        - Arn
+    events:
+      - http:
+          path: /operations
+          method: get
+          request:
+            parameters:
+              querystrings:
+                page: false
+                per_page: false
+                operation_type: false
+
 
   ArithmeticOperationWorker:
     handler: lambdas.arithmetic_operation_worker.main.handler

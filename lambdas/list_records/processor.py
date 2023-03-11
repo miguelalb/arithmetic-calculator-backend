@@ -57,8 +57,8 @@ class ListRecordsProcessor:
     def _evaluate_filter_conditions(self, user_id: str, params: dict) -> dict:
         """
         Evaluates query parameters and modifies the query before sending to DynamoDB.
-        :param event: list user records event
         :param user_id: User id from cognito authorizer
+        :param params: Query parameters
         :return: crud_service.list_items method payload
         """
         payload = {

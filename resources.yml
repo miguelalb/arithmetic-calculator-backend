@@ -324,6 +324,39 @@ Resources:
           PolicyName: ${self:service}-listRecords-lambda-policy-${opt:stage, self:provider.stage}
       RoleName: ${self:service}-listRecords-lambda-role-${opt:stage, self:provider.stage}
 
+  ListOperationsLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Description: "List Operations Lambda Role"
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaRole
+      Policies:
+        - PolicyDocument: {
+            "Statement": [{
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Query",
+                "dynamodb:PutItem"
+              ],
+              "Resource": [
+                { "Fn::GetAtt": ["ArithmeticCalculatorTable", "Arn"] },
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI1" ] ]},
+                { "Fn::Join" : [ "/", [ "Fn::GetAtt": [ "ArithmeticCalculatorTable", "Arn" ], "index", "GSI2" ] ]}
+              ]
+            },
+            ]
+          }
+          PolicyName: ${self:service}-listOperations-lambda-policy-${opt:stage, self:provider.stage}
+      RoleName: ${self:service}-listOperations-lambda-role-${opt:stage, self:provider.stage}
+
   OperationWorkerLambdaRole:
     Type: AWS::IAM::Role
     Properties:

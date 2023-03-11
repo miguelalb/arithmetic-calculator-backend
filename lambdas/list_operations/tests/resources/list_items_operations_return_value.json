@@ -1,0 +1,56 @@
+[
+  {
+    "PK": "Operation",
+    "SK": "Operation#adce4cfc-8c3f-4db2-aa29-0943f841ea5c",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#ADDITION",
+    "entity": "OPERATION",
+    "type": "ADDITION",
+    "cost": 1
+  },
+  {
+    "PK": "Operation",
+    "SK": "Operation#455f4aa1-9b3a-41a2-8b7b-015b23bcfe34",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#SUBTRACTION",
+    "entity": "OPERATION",
+    "type": "SUBTRACTION",
+    "cost": 2
+  },
+  {
+    "PK": "Operation",
+    "SK": "Operation#10c055d8-8d4a-462b-af6d-a99ef6a3a4e6",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#MULTIPLICATION",
+    "entity": "OPERATION",
+    "type": "MULTIPLICATION",
+    "cost": 3
+  },
+  {
+    "PK": "Operation",
+    "SK": "Operation#b176e575-815a-45c6-97bc-38a74abb3b23",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#DIVISION",
+    "entity": "OPERATION",
+    "type": "DIVISION",
+    "cost": 4
+  },
+  {
+    "PK": "Operation",
+    "SK": "Operation#3f8a8419-746a-455a-ab77-9caad5582e9c",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#SQUARE_ROOT",
+    "entity": "OPERATION",
+    "type": "SQUARE_ROOT",
+    "cost": 5
+  },
+  {
+    "PK": "Operation",
+    "SK": "Operation#74cd9e49-f081-4cdc-9933-e16c9aac6f5b",
+    "GSI1PK": "Operation",
+    "GSI1SK": "Operation#RANDOM_STRING",
+    "entity": "OPERATION",
+    "type": "RANDOM_STRING",
+    "cost": 6
+  }
+]
