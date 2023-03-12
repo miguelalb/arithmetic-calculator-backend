@@ -97,6 +97,7 @@ functions:
       - http:
           path: /operations
           method: post
+          cors: true
           request:
             schemas:
               application/json: new-operation-model
@@ -115,6 +116,7 @@ functions:
       - http:
           path: /users/user-balance
           method: get
+          cors: true
 
   PollResults:
     handler: lambdas.poll_results.main.handler
@@ -130,6 +132,7 @@ functions:
       - http:
           path: /operations/poll-results/{record_id}
           method: get
+          cors: true
           request:
             parameters:
               paths:
@@ -149,6 +152,7 @@ functions:
       - http:
           path: /records/{record_id}
           method: delete
+          cors: true
           request:
             parameters:
               paths:
@@ -169,6 +173,7 @@ functions:
       - http:
           path: /records
           method: get
+          cors: true
           request:
             parameters:
               querystrings:
@@ -194,6 +199,7 @@ functions:
       - http:
           path: /operations
           method: get
+          cors: true
           request:
             parameters:
               querystrings:

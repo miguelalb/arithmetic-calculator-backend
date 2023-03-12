@@ -153,8 +153,8 @@ The file will look like this:
 ```
 ### Frontend Environment Variables:  
 Use these values to fill out the:   
-`VUE_APP_SERVICE_ENDPOINT`   
-`VUE_APP_LOGIN_HOSTEDUI_URL`  
+`VITE_SERVICE_ENDPOINT`   
+`VITE_LOGIN_HOSTEDUI_URL`  
 Environment variables for `.env.local` file in the frontend.
 
 ### Versioning

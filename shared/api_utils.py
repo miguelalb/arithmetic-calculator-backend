@@ -19,9 +19,14 @@ class HTTPResponse:
                  ) -> None:
         self.status_code = int(status_code)
         self.body = dict_to_json_string(body)
+        self.headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': True
+        }
 
     def to_dict(self) -> dict:
         return {
+            'headers': self.headers,
             'statusCode': self.status_code,
             'body': self.body
         }
