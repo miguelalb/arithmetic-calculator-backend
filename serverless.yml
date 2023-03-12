@@ -253,6 +253,7 @@ functions:
       - http:
           path: /healthcheck
           method: get
+          cors: true
 
 resources:
   ${file(./resources.yml)}

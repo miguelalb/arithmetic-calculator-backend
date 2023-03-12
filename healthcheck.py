@@ -7,5 +7,9 @@ def hello(event, context):
         "message": "Arithmetic Calculator REST API. Your function executed successfully!",
         "status": "Healthy!",
     }
+    headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Credentials': True
+        }
 
-    return {"statusCode": HTTPStatus.OK, "body": json.dumps(body)}
+    return {"headers": headers,"statusCode": HTTPStatus.OK, "body": json.dumps(body)}
