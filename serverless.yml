@@ -26,10 +26,10 @@ custom:
     useDownloadCache: false
     useStaticCache: false
   defaultCallBackURL:
-    dev: "http://localhost:8080/callback"
+    dev: "http://localhost:5173/callback"
     prod: "http://example.com/callback" # TODO CHANGE ME BEFORE DEPLOY TO PRODUCTION
   defaultSignOutURL:
-    dev: "http://localhost:8080/logout"
+    dev: "http://localhost:5173/logout"
     prod: "http://example.com/logout" # TODO CHANGE ME BEFORE DEPLOY TO PRODUCTION
   callBackUrls:
     dev:

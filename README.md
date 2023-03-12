@@ -139,16 +139,16 @@ This file contains the outputs of the CloudFormation stack, including the **serv
 The file will look like this:
 ```json
 {
-  "CallbackURL": "http://localhost:8080/callback",
+  "CallbackURL": "http://localhost:5173/callback",
   "CognitoUserPoolClientId": "7mejh819kqlvu29qrg2qv3g2va",
   "CognitoUserPoolId": "us-east-1_7fYbmiVbN",
-  "SignOutURL": "http://localhost:8080/logout",
+  "SignOutURL": "http://localhost:5173/logout",
   "HelloAuthRequiredLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:123456789:function:arithmetic-calculator-api-dev-helloAuthRequired:6",
   "HelloLambdaFunctionQualifiedArn": "arn:aws:lambda:us-east-1:123456789:function:arithmetic-calculator-api-dev-hello:6",
   "CognitoUserPoolDomain": "dev-arithmetic-calculator-api",
   "ServiceEndpoint": "https://ex46ngbcm6.execute-api.us-east-1.amazonaws.com/dev",
   "ServerlessDeploymentBucketName": "arithmetic-calculator-ap-serverlessdeploymentbuck-cfvnjown6mxy",
-  "LoginHostedUIURL": "https://dev-arithmetic-calculator-api.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=7mejh819kqlvu29qrg2qv3g2va&redirect_uri=http://localhost:8080/callback"
+  "LoginHostedUIURL": "https://dev-arithmetic-calculator-api.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=7mejh819kqlvu29qrg2qv3g2va&redirect_uri=http://localhost:5173/callback"
 }
 ```
 ### Frontend Environment Variables:  
