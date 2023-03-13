@@ -9,6 +9,12 @@ function handler (data, serverless, options) {
         + "&client_id=" + data.CognitoUserPoolClientId
         + "&redirect_uri=" + data.CallbackURL;
 
+  data.SignoutHostedUIURL = "https://"
+        + data.CognitoUserPoolDomain
+        + ".auth.us-east-1.amazoncognito.com/logout?"
+        + "&client_id=" + data.CognitoUserPoolClientId
+        + "&logout_uri=" + data.SignOutURL;
+
   console.log('Received Stack Output', data)
 }
 

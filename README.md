@@ -129,7 +129,9 @@ $ serverless deploy
 ```
 This defaults to a dev version of the lambdas.  
 
-*__Note__: Make sure you have the appropriate AWS IAM permissions to deploy this stack.*
+*__Notes__*: 
+- *Make sure you have the appropriate AWS IAM permissions to deploy this stack.*
+- *After you deploy you need to login to the AWS Cognito User Pool on the AWS console and [create a user](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html).*
 
 ### Deployment Outputs:
 After running deploy, an `env.json` file will be created in the root of the project.   
@@ -148,13 +150,15 @@ The file will look like this:
   "CognitoUserPoolDomain": "dev-arithmetic-calculator-api",
   "ServiceEndpoint": "https://ex46ngbcm6.execute-api.us-east-1.amazonaws.com/dev",
   "ServerlessDeploymentBucketName": "arithmetic-calculator-ap-serverlessdeploymentbuck-cfvnjown6mxy",
-  "LoginHostedUIURL": "https://dev-arithmetic-calculator-api.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=7mejh819kqlvu29qrg2qv3g2va&redirect_uri=http://localhost:5173/callback"
+  "LoginHostedUIURL": "https://dev-arithmetic-calculator-api.auth.us-east-1.amazoncognito.com/login?response_type=token&client_id=7mejh819kqlvu29qrg2qv3g2va&redirect_uri=http://localhost:5173/callback",
+  "SignoutHostedUIURL": "https://dev-arithmetic-calculator-api.auth.us-east-1.amazoncognito.com/logout?&client_id=7mejh819kqlvu29qrg2qv3g2va&logout_uri=http://localhost:5173/signout/"
 }
 ```
 ### Frontend Environment Variables:  
 Use these values to fill out the:   
 `VITE_SERVICE_ENDPOINT`   
 `VITE_LOGIN_HOSTEDUI_URL`  
+`VITE_SIGNOUT_HOSTEDUI_URL`  
 Environment variables for `.env.local` file in the frontend.
 
 ### Versioning

@@ -5,7 +5,7 @@ from shared.models.base import Base
 
 from shared.date_utils import get_js_utc_now
 
-DEFAULT_INITIAL_USER_BALANCE = int(os.environ.get('DEFAULT_INITIAL_USER_BALANCE', 20))
+DEFAULT_INITIAL_USER_BALANCE = int(os.environ.get('DEFAULT_INITIAL_USER_BALANCE', 30))
 
 
 class RecordBase(Base):
