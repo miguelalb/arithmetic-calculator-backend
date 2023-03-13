@@ -98,6 +98,10 @@ functions:
           path: /operations
           method: post
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
           request:
             schemas:
               application/json: new-operation-model
@@ -117,6 +121,10 @@ functions:
           path: /users/user-balance
           method: get
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
 
   PollResults:
     handler: lambdas.poll_results.main.handler
@@ -133,6 +141,10 @@ functions:
           path: /operations/poll-results/{record_id}
           method: get
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
           request:
             parameters:
               paths:
@@ -153,6 +165,10 @@ functions:
           path: /records/{record_id}
           method: delete
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
           request:
             parameters:
               paths:
@@ -174,6 +190,10 @@ functions:
           path: /records
           method: get
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
           request:
             parameters:
               querystrings:
@@ -200,6 +220,10 @@ functions:
           path: /operations
           method: get
           cors: true
+          authorizer:
+            type: COGNITO_USER_POOLS
+            authorizerId:
+              Ref: ArithmeticCalculatorAuthorizer
           request:
             parameters:
               querystrings:

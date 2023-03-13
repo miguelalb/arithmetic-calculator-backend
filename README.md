@@ -131,7 +131,7 @@ This defaults to a dev version of the lambdas.
 
 *__Notes__*: 
 - *Make sure you have the appropriate AWS IAM permissions to deploy this stack.*
-- *After you deploy you need to login to the AWS Cognito User Pool on the AWS console and [create a user](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html).*
+- *After you deploy you need to log in to the AWS Cognito User Pool on the AWS console and [create a user](https://docs.aws.amazon.com/cognito/latest/developerguide/how-to-create-user-accounts.html).*
 
 ### Deployment Outputs:
 After running deploy, an `env.json` file will be created in the root of the project.   
@@ -159,7 +159,9 @@ Use these values to fill out the:
 `VITE_SERVICE_ENDPOINT`   
 `VITE_LOGIN_HOSTEDUI_URL`  
 `VITE_SIGNOUT_HOSTEDUI_URL`  
-Environment variables for `.env.local` file in the frontend.
+Environment variables for `.env.local` file in the frontend.  
+
+**Note:** You need to update these environment variables values in the `.env.local` file in the frontend each time you run `sls deploy` to re-deploy the app, even if you have not run `sls remove`. This is because AWS may generate a different client_id which will change the hosted UI URL login and signout URLs.
 
 ### Versioning
 
