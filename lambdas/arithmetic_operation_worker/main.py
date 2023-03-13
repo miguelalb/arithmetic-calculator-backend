@@ -6,7 +6,6 @@ from pythonjsonlogger import jsonlogger
 
 from lambdas.arithmetic_operation_worker.processor import ArithmeticOperationWorkerProcessor
 from shared.crud_service import CrudService
-from shared.error_handling import exception_handler
 
 # environment variables
 LOGGING_LEVEL = os.environ.get('LOGGING_LEVEL', 'INFO')
@@ -28,7 +27,6 @@ crud_service = CrudService(logger=logger,
                            table=table)
 
 
-@exception_handler
 def handler(event: dict, context: dict) -> None:
     """
     Arithmetic Operation Worker Lambda.

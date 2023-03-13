@@ -44,7 +44,6 @@ random_org_api_query_params = {
 }
 
 
-@exception_handler
 def handler(event: dict, context: dict) -> None:
     """
     Generate Random String Worker Lambda.
